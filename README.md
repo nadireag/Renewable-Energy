@@ -39,9 +39,30 @@ The major types of renewable energy sources: Biomass, Hydropower, Geothermal, Wi
 * Use HTML, CSS and JavaScript on the front end.
 
 * Use D3, Plotly, Chart.js and Leaflet to visualize the data. 
-
-
+## Pages
+### Home Page
+!
+### Comparison Page
+!
+### Search Page
+!
+### Reference
+!
+## Technology Used
+* HTML/CSS
+* Bootstrap
+* Pandas
+* Scipy
+* Numpy
+* Flask
+* PostgreSQL
+* ChartJS
+* D3.js
+* Leaflet
 ## Development Team
 * Nadire Gokcehan - [@nadireg](https://github.com/nadireag)
 * Reid Powell - [@ReidP31](https://github.com/ReidP31)
 * Jacob Abdelkhaleq - [@jacobabdel](https://github.com/jacobabdel)
+* Saba Tassawar - [@SabaTass](https://github.com/SabaTass)
+* Kenneth Edwards - [@Kenneth-Edwards](https://github.com/Kenneth-Edwards)
+* Cassy Myers - [@CassPMyers](https://github.com/CassPMyers)
