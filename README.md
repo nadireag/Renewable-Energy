@@ -43,6 +43,6 @@ Using historical data that is available between the years 1969-2017 for renewabl
 * Nadire Gokcehan - [@nadireg](https://github.com/nadireag)
 * Reid Powell - [@ReidP31](https://github.com/ReidP31)
 * Jacob Abdelkhaleq - [@jacobabdel](https://github.com/jacobabdel)
-* Saba Tass - [@Saba](@https://github.com/SabaTass)
+* Saba Tass - [@Saba](https://github.com/SabaTass)
 * Kenneth Edwards - [@Kenneth Edwards](https://github.com/Kenneth-Edwards)
 * Cassy Myers - [@Cassy Myers](https://github.com/CassPMyers)
