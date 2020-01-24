@@ -95,31 +95,31 @@ pointer-events: none;
 /* small screen adjustments*/
 @media(max-width:992px){
 
-#navbarSupportedContent {
-    display: block;
-}
+    #navbarSupportedContent {
+        display: block;
+    }
 
-#map {
-    top: 172px;
-}
+    #map {
+        top: 172px;
+    }
 
-.subtitle {
-    height: 36px;
-    font-size: 85%;
-}
-}
+    .subtitle {
+        height: 36px;
+        font-size: 85%;
+    }
+    }
 
-@media(max-width:767px){
-.thumbnail{
-    width: 40%
-}
+    @media(max-width:767px){
+    .thumbnail{
+        width: 40%
+    }
 
-#map {
-    top: 172px;
-}
+    #map {
+        top: 172px;
+    }
 
-.subtitle {
-    height: 36px;
-    font-size: 65%;
-}
+    .subtitle {
+        height: 36px;
+        font-size: 65%;
+    }
 }

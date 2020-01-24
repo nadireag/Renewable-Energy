@@ -36,9 +36,8 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-Energy_Comparison = Base.classes.energy_comparison
-Green_Energy = Base.classes.green_energy
-
+Renewable_History = Base.classes.renewable_history
+Consumption_History = Base.classes.consumption_history
 
 # View routes
 @app.route("/")
@@ -54,82 +53,32 @@ def plots():
     return render_template("predictions.html")
 
 
-# API routes
-@app.route("/api/energy_comparison")
-def get_energy_comparison_data():
+# API routes for data
+# renewable production data route
+@app.route("/api/renewable_history")
+def get_renewable_history_data():
     sel = [
-        Energy_Comparison.rank,
-        Energy_Comparison.state,
-        Energy_Comparison.total_energy_consumed_gwh,
-        Energy_Comparison.total_renewable,
-        Energy_Comparison.energy_difference,
-        Energy_Comparison.lattitude,
-        Energy_Comparison.longitude
+        Renewable_History.state,
+        Renewable_History.year,
+        Renewable_History.data
+    ]
+
+    results = db.session.query(*sel).all()
+    return jsonify(results)
+
+# consumption data route
+@app.route("/api/consumption_history")
+def get_consumption_history_data():
+    sel = [
+        Consumption_History.state,
+        Consumption_History.year,
+        Consumption_History.data
     ]
 
     results = db.session.query(*sel).all()
 
-    # create a dictionary for each row of comparison data
-    comparison_data = {
-        
-        "rank": [result[0] for result in results],
-        "state": [result[1] for result in results],
-        "total_energy_consumed_gwh" : [result[2] for result in results],
-        "renewable_total" : [result[3] for result in results],
-        "energy_difference" : [result[4] for result in results],
-        "lat": [result[5] for result in results],
-        "long":[result[6] for result in results]
-    }
-    # jsonify the dictionary
-    return jsonify(comparison_data)
+    return jsonify(results)
 
-
-@app.route("/api/green_energy")
-def get_green_energy_data():
-    sel = [
-        Green_Energy.id,
-        Green_Energy.state,
-        Green_Energy.urban_solar,
-        Green_Energy.rural_solar,
-        Green_Energy.rooftop_solar,
-        Green_Energy.csp_solar,
-        Green_Energy.onshore_wind,
-        Green_Energy.offshore_wind,
-        Green_Energy.biopower_solid,
-        Green_Energy.biopower_gaseous,
-        Green_Energy.geotermal_hydrothermal,
-        Green_Energy.egs_geothermal,
-        Green_Energy.hydropower,
-        Green_Energy.rank,
-        Green_Energy.energy_consumption,
-        Green_Energy.population
-    ]
-
-    results = db.session.query(*sel).all()
-
-    # create a dictionary for green energy data to format and send as jsonify
-    green_energy_data = {
-        
-        "id": [result[0] for result in results],
-        "state": [result[1] for result in results],
-        "urban_solar": [result[2] for result in results],
-        "rural_solar": [result[3] for result in results],
-        "rooftop_solar": [result[4] for result in results],
-        "csp_solar": [result[5] for result in results],
-        "onshore_wind": [result[6] for result in results],
-        "offshore_wind": [result[7] for result in results],
-        "biopower_solid": [result[8] for result in results],
-        "biopower_gaseous": [result[9] for result in results],
-        "geotermal_hydrothermal": [result[10] for result in results],
-        "egs_geothermal":[result[11] for result in results],
-        "hydropower":[result[12] for result in results], 
-        "rank": [result[13] for result in results],
-        "energy_consumption": [result[14] for result in results],
-        "population": [result[15] for result in results]
-    }
-
-
-    return jsonify(green_energy_data)
-
+# run the app
 if __name__ == "__main__":
     app.run(debug=True)
