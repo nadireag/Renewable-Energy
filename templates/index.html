@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Green Energy</title>
+    <title>Renewable Energy</title>
     <!-- bootstrap and css stylesheet link -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -16,56 +16,63 @@
 <body>
     <!--Navbar adjustments-->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">               
-            <a class="navbar-brand" href="/" >ABOUT</a>
-            
+        <div class="container">  
+            <a class="navbar-brand" href="/" >ABOUT </a>    
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">    
                     <li class="nav-item">
-                        <a class="nav-link" href ="/map">ENERGY MAP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/plots">VISUALIZATIONS</a>
-                    </li>
+                        <a class="nav-link" href ="/predictions">RENEWABLE PREDICTIONS</a>
+                    </li>   
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- cretae a div for the image -->
+    <div class="image"></div>
     <!-- create a container -->
     <div class="container content-wrapper">
+        <!-- row for the general information -->
         <div class="row">
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <img src= "../static/resources/recycle-globe.png" width="50%">
-                </div>
-            </div>
             <div class="col-md-8">
+                <h3 class="header">Transform The Energy Industry With Machine Learning</h3>
+                <br>
+                <p> The extraction of energy from renewable sources is rapidly growing. The current pace of technological development makes it commercially viable to harness energy from sun, wind, geothermal and many other renewable sources. Renewable energy has the potential to provide 80 percent of U.S. electricity by 2050.</p>
+                <br>
+                <p>An inherent characteristic common to all renewable power plants is that power generation is dependent on environmental parameters and thus cannot be fully controlled or planned for in advance.</p>
+                <p>Machine learning techniques have been successfully used in the planning of renewable energy plants based on available data with reasonable accuracy. Researches on location, sizing, and configuration of renewable energy based on machine learning techniques underline it's popularity, particularly in isolated areas. This shows the importance of potential machine learning as a design tool in strategic planning and policy making for renewable energy.</p>
+                <p>A stronger reliance on machine learning algorithms can also save the customer’s money while rescuing the planet at the same time.</p>
+            </div>
+            <div class="col-md-4">
                 <div class="data">
-                    <h3 class="header">Data Sources</h3>
-                    <li><a href=" https://data.world/doe/united-states-renewable-energy ">Data World - U.S. Renewable Energy Technical Potentials: A GIS-Based Analysis <i class="fas fa-external-link-alt"></i></a></li>
-                    
-                    <li><a href = "https://www.eia.gov/state/rankings/">EIA.gov - Total Energy Consumed per state for 2017  <i class="fas fa-external-link-alt"></i></a></li>
-                    
-                    <li><a href="https://en.wikipedia.org/wiki/ List_of_states_and_territories_of_the_United_States_by_population#cite_note-5">Wikipedia - US Census population estimates by states  <i class="fas fa-external-link-alt"></i></a></li>
-
-                    <li><a href="https://www.kaggle.com/washimahmed/usa-latlong-for-state-abbreviations">Kaggle.com - States Latitude and Longitude <i class="fas fa-external-link-alt"></i></a></li>
-
+                    <div class="thumbnail">
+                        <img src= "../static/resources/ai.jpg" width="120%">
+                    </div>
                 </div>   
             </div>
         </div>
+        <!-- new row for the questions and the data links -->
+        <div class="row">
+            <div class="col-md-5">
+                <h4>Green Energy by the Numbers</h4>
+                <li>How renewable energy production will change in the US by state?</li>
+                <li> Predict a state's ability to meet its Energy Consumption needs with Renewable Energy Production.</li>
+            </div>
+            <div class="col-md-7">
+                <!-- header for the links -->
+                <h4 class="header">Data Links</h4>
+                <!-- list of links -->
+                <li><a href="https://www.eia.gov/state/seds/seds-data-complete.php?sid=US#Consumption">EIA.gov - U.S. Consumed Energy by State: 1960-2017 <i class="fas fa-external-link-alt"></i></a></li>
 
-        <div class="col-md-12">
-            <h3 class="header">Renewable Energy vs. Consumption in US by State</h3>
-            <p><strong>Renewable energy </strong> is energy that comes from natural resources such as sunlight, wind, rain, tides, plants, waves and geothermal heat. These energy resources are renewable, meaning they are naturally replenished. Renewable energy has the potential to provide 80 percent of U.S. electricity by 2050.</p>
-            <br>
-            <p><strong>The major types of renewable energy sources: </strong>Biomass, Hydropower, Geothermal, Wind and Solar.</p>
-            <p>Every year, much of the energy the U.S. consumes is wasted through transmission, heat loss and inefficient technology, costing American families and businesses money, and leading to increased carbon pollution.</p>
-            <p>States have adopted a number of policies to support renewable energy technologies. Each state has its own Renewable Portfolio Standards (RPS), which require that a specified percentage of the electricity that utilities sell comes from renewable resources. States have created these standards to diversify their energy resources, promote domestic energy production and encourage economic development. </p>
-            <br>
-            <h5>Clean Energy by the Numbers</h5>
-            <p>Which states have the most potential renewable energy?</p>
-            <p>Total energy consumption vs. renewable energy potential by State: Can a State’s potential meet their consumption? </p>
-            <p>Types of renewable energy by highest potential: Which types account for the most potential? By State?</p>
+                <li><a href="https://www.eia.gov/state/seds/seds-data-complete.php">EIA.gov - U.S. Renewale Energy Production by State: 1960-2017 <i class="fas fa-external-link-alt"></i></a></li>
+                
+                <li><a href=" https://data.world/doe/united-states-renewable-energy ">Data World - U.S. Renewable Energy Technical Potentials: A GIS-Based Analysis <i class="fas fa-external-link-alt"></i></a></li>
+                
+                <li><a href = "https://www.eia.gov/state/rankings/">EIA.gov - Total Energy Consumed per state for 2017  <i class="fas fa-external-link-alt"></i></a></li>
+                
+                <li><a href="https://en.wikipedia.org/wiki/ List_of_states_and_territories_of_the_United_States_by_population#cite_note-5">Wikipedia - US Census population estimates by states  <i class="fas fa-external-link-alt"></i></a></li>
+
+                <li><a href="https://www.kaggle.com/washimahmed/usa-latlong-for-state-abbreviations">Kaggle.com - States Latitude and Longitude <i class="fas fa-external-link-alt"></i></a></li>
+            </div>
         </div>
     </div>
 

@@ -45,13 +45,13 @@ Green_Energy = Base.classes.green_energy
 def landing_page():
     return render_template("index.html")
 
-@app.route("/map")
-def map():
-    return render_template("map.html", API_KEY=os.environ["API_KEY"])
+# @app.route("/map")
+# def map():
+#     return render_template("map.html", API_KEY=os.environ["API_KEY"])
 
-@app.route("/plots")
+@app.route("/predictions")
 def plots():
-    return render_template("plots.html")
+    return render_template("predictions.html")
 
 
 # API routes
