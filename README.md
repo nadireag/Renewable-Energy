@@ -1,6 +1,9 @@
 # Renewable Energy
 
 ### Data Sources
+* https://www.eia.gov/state/seds/seds-data-complete.php?sid=US#Consumption
+
+* https://www.eia.gov/state/seds/seds-data-complete.php
 
 * https://data.world/doe/united-states-renewable-energy
 
@@ -10,23 +13,18 @@
 
 * https://www.kaggle.com/washimahmed/usa-latlong-for-state-abbreviations
 
-* https://leafletjs.com/examples/choropleth/us-states.js
-
-* Our ETL project link for data cleaning part https://github.com/nadireag/ETL-Project
 
 ### Description:
 
-Renewable energy is energy that comes from natural resources such as sunlight, wind, rain, tides, plants, waves and geothermal heat. These energy resources are renewable, meaning they are naturally replenished.
+Machine learning can increase the value of renewable energy. 
 
-The major types of renewable energy sources: Biomass, Hydropower, Geothermal, Wind and Solar.
+Using historical data that is available between the years 1969-2017 for renewable production and consumption values: Can we make accurate predictions about how the values will change for each state?
 
 ### Questions:
 
-* Which states are using the most renewable energy?
-
-* Total energy consumption vs. renewable energy potential by State: Can a State’s potential meet their consumption?
-
-* Types of renewable energy by highest potential: Which types account for the most potential? By State?
+* How renewable energy production will change in the US by state?
+ 
+* Predict a state's ability to meet its Energy Consumption needs with Renewable Energy Production.
 
 ## Analysis
 
@@ -45,3 +43,6 @@ The major types of renewable energy sources: Biomass, Hydropower, Geothermal, Wi
 * Nadire Gokcehan - [@nadireg](https://github.com/nadireag)
 * Reid Powell - [@ReidP31](https://github.com/ReidP31)
 * Jacob Abdelkhaleq - [@jacobabdel](https://github.com/jacobabdel)
+* Saba Tass - [@Saba](@https://github.com/SabaTass)
+* Kenneth Edwards - [@Kenneth Edwards](https://github.com/Kenneth-Edwards)
+* Cassy Myers - [@Cassy Myers](https://github.com/CassPMyers)
