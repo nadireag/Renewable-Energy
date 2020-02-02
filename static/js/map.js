@@ -1,25 +1,25 @@
 // create our base map
 var mapboxAccessToken = API_KEY;
-var map = L.map('map').setView([37.8, -96], 5);
+var map = L.map('map').setView([37.8, -96], 4);
 
 // create a function to resize the map for small screens
-reZoomMap(); 
+// reZoomMap(); 
 
 window.addEventListener("resize", function() {
     reZoomMap();
 });
 
-function reZoomMap() {
-    var x = window.innerWidth || this.document.documentElement.clientWidth;
+// function reZoomMap() {
+//     var x = window.innerWidth || this.document.documentElement.clientWidth;
 
-    if(x >= 600 && x <= 1000) {
-        map.setView([37.8, -96], 4.3);
-    } else if(x < 600) {
-        map.setView([37.8, -96], 3.4);
-    } else {
-        map.setView([37.8, -96], 5);
-    }
-}
+//     if(x >= 600 && x <= 1000) {
+//         map.setView([37.8, -96], 4.3);
+//     } else if(x < 600) {
+//         map.setView([37.8, -96], 3.4);
+//     } else {
+//         map.setView([37.8, -96], 5);
+//     }
+// }
 
 // add light tile layer
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {

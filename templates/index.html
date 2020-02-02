@@ -11,52 +11,97 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     <link rel="stylesheet" href="../static/css/style.css">
+
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+    integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+    crossorigin=""></script>
+
 </head>
     
 <body>
     <!--Navbar adjustments-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">  
-            <a class="navbar-brand" href="/" >ABOUT </a>    
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">    
-                    <li class="nav-item">
-                        <a class="nav-link" href ="/predictions">RENEWABLE PREDICTIONS</a>
-                    </li>   
-                </ul>
-            </div>
+            <a class="navbar-brand" href="/" >RENEWABLE PREDICTION</a>    
         </div>
     </nav>
     <!-- cretae a div for the image -->
     <div class="image"></div>
     <!-- create a container -->
     <div class="container content-wrapper">
-        <!-- row for the general information -->
+        
+        <!-- row for the general information annd map -->
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <h3 class="header">Transform The Energy Industry With Machine Learning</h3>
                 <br>
                 <p> The extraction of energy from renewable sources is rapidly growing. The current pace of technological development makes it commercially viable to harness energy from sun, wind, geothermal and many other renewable sources. Renewable energy has the potential to provide 80 percent of U.S. electricity by 2050.</p>
                 <br>
                 <p>An inherent characteristic common to all renewable power plants is that power generation is dependent on environmental parameters and thus cannot be fully controlled or planned for in advance.</p>
-                <p>Machine learning techniques have been successfully used in the planning of renewable energy plants based on available data with reasonable accuracy. Researches on location, sizing, and configuration of renewable energy based on machine learning techniques underline it's popularity, particularly in isolated areas. This shows the importance of potential machine learning as a design tool in strategic planning and policy making for renewable energy.</p>
-                <p>A stronger reliance on machine learning algorithms can also save the customer’s money while rescuing the planet at the same time.</p>
+                <p>Machine learning techniques have been successfully used in the planning of renewable energy plants based on available data with reasonable accuracy.</p>
             </div>
-            <div class="col-md-4">
-                <div class="data">
-                    <div class="thumbnail">
-                        <img src= "../static/resources/ai.jpg" width="120%">
-                    </div>
-                </div>   
+            <!-- create a div for the map -->
+            <div class=col-md-8 id="map"></div>
+        </div>
+        
+        <!-- create new row for us visualizations -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="header">US Renewable Energy Predictions</h3>
+                <div id="plot1"></div>
+            </div>
+        </div>
+         
+        <!-- create new row for the dropdown menu -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="header">Renewable Energy Predictions for States</h3>
+                <div class="well">
+                    <h5>State</h5>
+                    <select id="selDataset" onchange="stateChange(this.value)"></select>
+                </div>    
+            </div>
+        </div>
+        <!-- create a new row for the charts -->
+        <div class="row">
+            <!-- create a div for the second plot -->
+            <div class="col-md-6">
+                <div id="plot2">
+                    <canvas id="chart1" width="400" height="400"></canvas>
+                </div>
+            </div>
+        
+            <!-- create a div for the third plot -->
+            <div class="col-md-6">
+                <div id="plot3">
+                    <canvas id="chart2" width="400" height="400"></canvas>
+                </div>
             </div>
         </div>
         <!-- new row for the questions and the data links -->
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-9">
                 <h4>Green Energy by the Numbers</h4>
                 <li>How renewable energy production will change in the US by state?</li>
                 <li> Predict a state's ability to meet its Energy Consumption needs with Renewable Energy Production.</li>
             </div>
+            <div class="col-md-3">
+                <img src="../static/resources/ML.jpeg" width="100%">
+                <p id="info">Renewable Energy Production vs Total Consumed Energy</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="data">
+                    <div class="thumbnail">
+                        <img src= "../static/resources/ai.jpg" width="80%">
+                    </div>
+                </div>   
+            </div>    
             <div class="col-md-7">
                 <!-- header for the links -->
                 <h4 class="header">Data Links</h4>
@@ -80,6 +125,28 @@
     <footer class="footer font-small footer-dark">
         <div class="footer-copyright text-center py-1">© Copyright Coding Bootcamp 2019</div>      
     </footer>
+
+    <!--plotly and chart.js-->
+    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    
+    <!-- our js files -->
+    <script type="text/javascript" src= "../static/js/logic.js"></script>
+    <script type="text/javascript" src = "../static/js/plots.js"></script>
+
+    <!-- map configurations -->
+    <!-- API key -->
+    <script>
+        var API_KEY = "{{API_KEY}}";
+    </script>
+    
+    <!--GeoJSON States Data-->
+    <script type="text/javascript" src="../static/js/states.js"></script>
+    
+    <!--JS-->
+    <script type="text/javascript" src="../static/js/map.js"></script>
 
 </body>
 </html>

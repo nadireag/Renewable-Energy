@@ -38,6 +38,8 @@ Base.prepare(db.engine, reflect=True)
 # Save references to each table
 Renewable_History = Base.classes.renewable_history
 Consumption_History = Base.classes.consumption_history
+State_Energy = Base.classes.state_energy
+Us_Energy = Base.classes.us_energy
 
 # View routes
 @app.route("/")
@@ -51,6 +53,40 @@ def landing_page():
 @app.route("/predictions")
 def plots():
     return render_template("predictions.html")
+
+
+# data routes
+
+# state energy route
+@app.route("/api/state_energy")
+def get_state_energy_data():
+    sel = [
+        State_Energy.state,
+        State_Energy.year,
+        State_Energy.produced_renewable,
+        State_Energy.total_consumed,
+        State_Energy.gdp,
+        State_Energy.population,
+        State_Energy.energy_price
+    ]
+
+    state_results = db.session.query(*sel).all()
+    return jsonify(state_results)
+
+@ app.route("/api/us_energy")
+def get_us_energy_data():
+    sel = [
+        Us_Energy.year,
+        Us_Energy.produced_renewable,
+        Us_Energy.total_consumed,
+        Us_Energy.gdp,
+        Us_Energy.population,
+        Us_Energy.energy_price
+    ]
+    us_results = db.session.query(*sel).all()
+    return jsonify(us_results)
+    
+
 
 # renewable production data route
 @app.route("/api/renewable_history")
