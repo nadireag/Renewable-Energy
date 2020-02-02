@@ -52,8 +52,6 @@ def landing_page():
 def plots():
     return render_template("predictions.html")
 
-
-# API routes for data
 # renewable production data route
 @app.route("/api/renewable_history")
 def get_renewable_history_data():
