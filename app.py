@@ -71,7 +71,7 @@ def get_state_energy_data():
     return jsonify(state_results)
 
 # create us energy route
-@ app.route("/api/us_energy")
+@app.route("/api/us_energy")
 def get_us_energy_data():
     sel = [
         Us_Energy.year,
@@ -85,8 +85,6 @@ def get_us_energy_data():
     us_results = db.session.query(*sel).all()
     return jsonify(us_results)
     
-
-
 # run the app
 if __name__ == "__main__":
     app.run(debug=True)
