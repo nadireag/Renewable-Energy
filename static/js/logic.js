@@ -18,7 +18,8 @@ d3.json(url, function(data){
         x: year,
         y: renewable_production,
         type: "bar",
-        name: "Renewable Production"
+        name: "Renewable Production",
+        marker: {color: 'rgb(26, 118, 255)'},
         
     };
 
@@ -26,19 +27,41 @@ d3.json(url, function(data){
         x: year,
         y:  total_consumed,
         type: "bar",
-        name: "Total Energy Consumption"
+        name: "Total Energy Consumption",
+        marker: {color: 'rgb(55, 83, 109)'},
     }
 
     data =  [trace1, trace2]
 
-    layout = {
-        yaxis:{
-            title: "Billion BTU"
-        },
+
+    var layout = {
         xaxis: {
-            title: "Year"
-        }
-    }
+            title : "Year",
+            tickfont: {
+            size: 14,
+            color: 'rgb(107, 107, 107)'
+          }},
+        yaxis: {
+          title: 'Billion BTU',
+          titlefont: {
+            size: 16,
+            color: 'rgb(107, 107, 107)'
+          },
+          tickfont: {
+            size: 14,
+            color: 'rgb(107, 107, 107)'
+          }
+        },
+        legend: {
+          x: 0,
+          y: 1.5,
+          bgcolor: 'rgba(255, 255, 255, 0)',
+          bordercolor: 'rgba(255, 255, 255, 0)'
+        },
+        barmode: 'group',
+        bargap: 0.15,
+        bargroupgap: 0.1
+      };
 
     // Render the plot to the div tag with id "plot"
     Plotly.newPlot("plot1", data, layout, {scroolZoom: true});
@@ -77,8 +100,8 @@ Plotly.d3.csv("static/csv/predictions.csv", function(err, rows){
         header: {
             values: headerValues,
             align: "center",
-            line: {width: 1, color: 'gray'},
-            fill: {color: "green"},
+            line: {width: 1, color: 'rgb(55, 83, 109)'},
+            fill: {color: "rgb(55, 83, 109"},
             font: {family: "Arial", size: 8, color: "white"}
         },
         cells: {
