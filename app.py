@@ -36,8 +36,6 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
 # Save references to each table
-Renewable_History = Base.classes.renewable_history
-Consumption_History = Base.classes.consumption_history
 State_Energy = Base.classes.state_energy
 Us_Energy = Base.classes.us_energy
 
@@ -56,7 +54,6 @@ def plots():
 
 
 # data routes
-
 # state energy route
 @app.route("/api/state_energy")
 def get_state_energy_data():
@@ -73,6 +70,7 @@ def get_state_energy_data():
     state_results = db.session.query(*sel).all()
     return jsonify(state_results)
 
+# create us energy route
 @ app.route("/api/us_energy")
 def get_us_energy_data():
     sel = [
@@ -81,37 +79,13 @@ def get_us_energy_data():
         Us_Energy.total_consumed,
         Us_Energy.gdp,
         Us_Energy.population,
-        Us_Energy.energy_price
+        Us_Energy.energy_price,
+        Us_Energy.difference
     ]
     us_results = db.session.query(*sel).all()
     return jsonify(us_results)
     
 
-
-# renewable production data route
-@app.route("/api/renewable_history")
-def get_renewable_history_data():
-    sel = [
-        Renewable_History.state,
-        Renewable_History.year,
-        Renewable_History.data
-    ]
-
-    results = db.session.query(*sel).all()
-    return jsonify(results)
-
-# consumption data route
-@app.route("/api/consumption_history")
-def get_consumption_history_data():
-    sel = [
-        Consumption_History.state,
-        Consumption_History.year,
-        Consumption_History.data
-    ]
-
-    results = db.session.query(*sel).all()
-
-    return jsonify(results)
 
 # run the app
 if __name__ == "__main__":
