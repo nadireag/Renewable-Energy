@@ -6,7 +6,7 @@ var url = "/api/us_energy";
 
 
 d3.json(url, function(data){
-    // console.log(data);
+    console.log(data);
 
     // grab values
     var year = data.map(item => item.year)
@@ -65,6 +65,7 @@ d3.json(url, function(data){
 
     // Render the plot to the div tag with id "plot"
     Plotly.newPlot("plot1", data, layout, {scroolZoom: true});
+
 });
 
     // ///////////////////////////////
@@ -113,13 +114,210 @@ Plotly.d3.csv("static/csv/predictions.csv", function(err, rows){
         }
     }]
 
-    
-    // var layout_p = {
-    //     title: "Energy Predictions"
-    // }
-
-
     // plot the table
     Plotly.newPlot('table', predData);
 });
 
+// ///////////////////////////////////////////////////////////////
+
+Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
+
+  function unpack(rows, key) {
+  return rows.map(function(row) { return row[key]; });
+}
+
+  var frames = []
+  var x = unpack(rows, 'Year')
+  var y = unpack(rows, 'Difference')
+
+  var n = 100;
+  for (var i = 0; i < n; i++) {
+    frames[i] = {data: [{x: [], y: []}]}
+    frames[i].data[0].x = x.slice(0, i+1);
+    frames[i].data[0].y = y.slice(0, i+1);
+  }
+
+  Plotly.newPlot('plot', [{
+    x: frames[1].data[0].x,
+    y: frames[1].data[0].y,
+    fill: 'tozeroy',
+    type: 'scatter',
+    mode: 'lines',
+    line: {color: 'red'}
+  }], {
+    title: "Difference Between Renewable Production and Total Consumed Energy",
+    xaxis: {
+      title:"Year",
+      range: [
+        1970, 2030
+      ]
+    },
+    yaxis: {
+      title: "Difference(Bil. BTU)",
+      range: [
+        -110506126.9,
+        90
+      ]
+    },
+    updatemenus: [{
+      x: 0.1,
+      y: 0,
+      yanchor: "top",
+      xanchor: "right",
+      showactive: false,
+      direction: "left",
+      type: "buttons",
+      pad: {"t": 87, "r": 10},
+      buttons: [{
+        method: "animate",
+        args: [null, {
+          fromcurrent: true,
+          transition: {
+            duration: 0,
+          },
+          frame: {
+            duration: 40,
+            redraw: false
+          }
+        }],
+        label: "Play"
+      }, {
+        method: "animate",
+        args: [
+          [null],
+          {
+            mode: "immediate",
+            transition: {
+              duration: 0
+            },
+            frame: {
+              duration: 0,
+              redraw: false
+            }
+          }
+        ],
+        label: "Pause"
+      }]
+    }]
+  }).then(function() {
+    Plotly.addFrames('plot', frames);
+  });
+
+})
+
+
+
+
+
+
+
+
+
+
+// Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
+
+//   function unpack(rows, key) {
+//   return rows.map(function(row) { return row[key]; });
+// }
+
+//   var frames = []
+//   var x = unpack(rows, 'Year')
+//   var y = unpack(rows, 'Total Consumed(Billion Btu)')
+//   var x2 = unpack(rows, 'Year')
+//   var y2 = unpack(rows, 'Population(Thousand)')
+
+//   console.log(frames)
+
+//   var n = 100;
+//   for (var i = 0; i < n; i++) {
+//     frames[i] = {data: [{x: [], y: []}, {x: [], y: []}]}
+//     frames[i].data[1].x = x.slice(0, i+1);
+//     frames[i].data[1].y = y.slice(0, i+1);
+//     frames[i].data[0].x = x2.slice(0, i+1);
+//     frames[i].data[0].y = y2.slice(0, i+1);
+//   }
+
+//   var trace4 = {
+//     type: "scatter",
+//     mode: "lines",
+//     name: 'Population',
+//     fill: 'tonexty',
+//     x: frames[5].data[1].x,
+//     y: frames[5].data[1].y,
+//     line: {color: 'grey'}
+//   }
+
+//   var trace5 = {
+//     type: "scatter",
+//     mode: "lines",
+//     name: 'Total Consumed',
+//     x: frames[5].data[0].x,
+//     y: frames[5].data[0].y,
+//     line: {color: 'lightgrey'}
+//   }
+
+//   var data5= [trace4,trace5];
+
+//   var layout5 = {
+//     title: 'Total Consumed Energy - Population',
+//     xaxis: {
+//       range: [frames[99].data[0].x[0], frames[99].data[0].x[99]],
+//       showgrid: false
+//     },
+//     yaxis: {
+//       range: [120, 140],
+//       showgrid: false
+//     },
+//     legend: {
+//       orientation: 'h',
+//       x: 0.5,
+//       y: 1.2,
+//       xanchor: 'center'
+//     },
+//     updatemenus: [{
+//       x: 0.5,
+//       y: 0,
+//       yanchor: "top",
+//       xanchor: "center",
+//       showactive: false,
+//       direction: "left",
+//       type: "buttons",
+//       pad: {"t": 87, "r": 10},
+//       buttons: [{
+//         method: "animate",
+//         args: [null, {
+//           fromcurrent: true,
+//           transition: {
+//             duration: 0,
+//           },
+//           frame: {
+//             duration: 40,
+//             redraw: false
+//           }
+//         }],
+//         label: "Play"
+//       }, {
+//         method: "animate",
+//         args: [
+//           [null],
+//           {
+//             mode: "immediate",
+//             transition: {
+//               duration: 0
+//             },
+//             frame: {
+//               duration: 0,
+//               redraw: false
+//             }
+//           }
+//         ],
+//         label: "Pause"
+//       }]
+//     }]
+//   };
+
+//   Plotly.newPlot('plot', data5, layout5).then(function() {
+//     Plotly.addFrames('plot', frames);
+//   });
+    
+// })
