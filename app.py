@@ -42,15 +42,7 @@ Us_Energy = Base.classes.us_energy
 # View routes
 @app.route("/")
 def landing_page():
-    return render_template("index.html")
-
-# @app.route("/map")
-# def map():
-#     return render_template("map.html", API_KEY=os.environ["API_KEY"])
-
-@app.route("/predictions")
-def plots():
-    return render_template("predictions.html")
+    return render_template("index.html", API_KEY=os.environ["API_KEY"])
 
 
 # data routes
@@ -62,9 +54,9 @@ def get_state_energy_data():
         State_Energy.year,
         State_Energy.produced_renewable,
         State_Energy.total_consumed,
-        State_Energy.gdp,
         State_Energy.population,
-        State_Energy.energy_price
+        State_Energy.energy_price,
+        State_Energy.difference
     ]
 
     state_results = db.session.query(*sel).all()
