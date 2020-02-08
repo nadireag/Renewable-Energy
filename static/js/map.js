@@ -32,46 +32,48 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 L.geoJson(statesData).addTo(map);
 
 //  assign our data route to a variable
-var data_url = "/api/energy_comparison";
+var data_url = "/api/state_energy";
 
 // grab the data with d3
 d3.json(data_url, function(data){
-
+    
     // loop through our data and join with states data
-    for(var i = 0; i < data.state.length; i++) {
-        for(var j = 0; j < data.state.length; j++) {
-            if(data.state[i] === statesData.features[j].properties.name) {
-                statesData.features[j].properties.energy_difference = data.energy_difference[i];
-                statesData.features[j].properties.renewable_total = data.renewable_total[i];
-                statesData.features[j].properties.rank = data.rank[i];
-                statesData.features[j].properties.total_energy_consumed_gwh = data.total_energy_consumed_gwh[i];
+    for(var i = 0; i < data.length; i++) {
+        for(var j = 0; j < statesData.features.length; j++) {
+            if(data[i].state === statesData.features[j].properties.name && data[i].year == 2021) {
+                statesData.features[j].properties.energy_difference_2021 = data[i].difference;
+                statesData.features[j].properties.produced_renewable_2021 = data[i].produced_renewable;
+                statesData.features[j].properties.total_consumed_2021 = data[i].total_consumed;
+                statesData.features[j].properties.population_2021 = data[i].population;
+                statesData.features[j].properties.energy_price_2021 = data[i].energy_price;
+                statesData.features[j].properties.year_2021 = data[i].year;
             }
         }
     };
 
     // grab energy difference min and max values to create the color scale
-    var min = Math.min.apply(null, data.energy_difference);
-    var max = Math.max.apply(null, data.energy_difference);
+    var min = Math.min.apply(null, data.difference);
+    var max = Math.max.apply(null, data.difference);
 
     console.log('min, max:', min, max);
 
-    // create function that assign colors
+    // create function that assigns colors
     function getColor(d) {
-        return d < 0  ? "#e5f5e0":
-               d < 1000000 ? "#c7e9c0":
-               d < 5000000 ? "#a1d99b":
-               d < 10000000 ? "#74c476":
-               d < 20000000 ? "#41ab5d":
-               d < 30000000 ? "#238b45":
-               d < 40000000 ? "#006d2c":
-                              " #00441b"                                   
-    }     
+        return d > 0  ? "#e5f5e0":
+               d > -100000 ? "#F8F352":
+               d > -500000 ? "#F8F352":
+               d > -1000000 ? "#F8E252":
+               d > -2000000 ? "#F8C452":
+               d > -3000000 ? "#F68C21":
+               d > -4000000 ? "#DF1418":
+                              "#DF1418"                                  
+}     
 
 
     // create style function 
     function style(feature) {
         return {
-            fillColor: getColor(feature.properties.energy_difference),
+            fillColor: getColor(feature.properties.energy_difference_2021),
             weight: 2,
             opacity: 0.8,
             color: 'gray',
@@ -88,10 +90,10 @@ d3.json(data_url, function(data){
     legend.onAdd = function (map) {
         // create a div for the legend
         var div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += "<p>Energy Difference (Gwhs millions)</p>";
-            grades = [ -100000,0, 1000000, 5000000, 10000000, 20000000, 30000000, 40000000]
+            div.innerHTML += "<p>Energy Difference <br>(in Billions of Btus)</br> </p>";
+            grades = [ 0, -100000, -500000, -1000000, -2000000, -3000000, -4000000]
             labels = [];
-            grades1 = ["<0", "0-1", "1-5", "5-10", "10-20", "20-30", "30-40", "40+"]
+            grades1 = ["0 >", "> -100,000", "> -500,000", "> -1,000,000", "> -2,000,000", "> -3,000,000", "> -4,000,000"]
 
         
         // loop through our density intervals and generate a label with a colored square for each interval
@@ -124,11 +126,14 @@ d3.json(data_url, function(data){
         });
         
         // create the popup variable
-        var popupHtml = "<h5>" + (feature.properties.name) + "</h5>" + 
-        "<p><strong>Renewable Energy: </strong>" + feature.properties.renewable_total + "</p>" + 
-        "<p><strong>Total Consumed Energy: </strong>" + (feature.properties.total_energy_consumed_gwh) + "</p>" + 
-        "<p><strong>Energy Difference: </strong>" + (feature.properties.energy_difference) + "</p>" +
-        "<p><strong>Consumed Energy Rank: </strong>" + (feature.properties.rank) + "</p>";
+        var popupHtml = "<h5>" + (feature.properties.name) + "</h5>" + "<hr>"+
+        "<p><strong>Renewable Energy Production: </strong>" + feature.properties.produced_renewable_2021 + "</p>" + 
+        "<p><strong>Total Consumed Energy: </strong>" + (feature.properties.total_consumed_2021) + "</p>" + 
+        "<p><strong>Energy Difference: </strong>" + (feature.properties.energy_difference_2021) + "</p>" +
+        "<p><strong>Population: </strong>" + (feature.properties.population_2021) + "</p>" +
+        "<p><strong>Energy Price: </strong>" + (feature.properties.energy_price_2021) + "</p>" +
+        "<p><strong>Year: </strong>" + (feature.properties.year_2021) + "</p>";
+
 
         // add the popup to the map and set location
         layer.bindPopup(popupHtml, { className: 'popup', 'offset': L.point(0, -20) });

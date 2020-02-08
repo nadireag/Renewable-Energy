@@ -6,8 +6,7 @@ var url = "/api/us_energy";
 
 
 d3.json(url, function(data){
-    console.log(data);
-
+    
     // grab values
     var year = data.map(item => item.year)
     var renewable_production = data.map(item => item.produced_renewable)
