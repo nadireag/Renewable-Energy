@@ -12,6 +12,23 @@ body{
     color: #fff !important;
 }
 
+/* scroll feature */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+    overflow-y: auto;
+}
+
+main h4:before {
+    height: 65px;
+    content: "";
+    display:block;
+}
+
+
 /* set image styling */
 .image {
     height: 300px;
@@ -41,6 +58,7 @@ background-color:#444;
 /* set header fonts */
 h3{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
 }
 h4{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

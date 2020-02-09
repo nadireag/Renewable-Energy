@@ -1,19 +1,17 @@
 
-console.log("loaded");
-
 // get our url for the data
 var url = "/api/us_energy";
 
-
+//  use d3 to get the data
 d3.json(url, function(data){
-    console.log(data);
+    // console.log(data);
 
     // grab values
     var year = data.map(item => item.year)
     var renewable_production = data.map(item => item.produced_renewable)
     var total_consumed = data.map(item => item.total_consumed)
 
-
+    // create traces for renewable and total consumption 
     var trace1 ={
         x: year,
         y: renewable_production,
@@ -31,9 +29,10 @@ d3.json(url, function(data){
         marker: {color: 'rgb(55, 83, 109)'},
     }
 
+    // create the data array
     data =  [trace1, trace2]
 
-
+    //  set layout features
     var layout = {
         xaxis: {
             title : "Year",
@@ -68,64 +67,16 @@ d3.json(url, function(data){
 
 });
 
-    // ///////////////////////////////
-
-// read the data to create table for predicted values
-Plotly.d3.csv("static/csv/predictions.csv", function(err, rows){
-
-    // define unpack function to read csv by each row
-    function unpack(rows, key) {
-        return rows.map(function(row) { return row[key]; });
-    }
-
-    // get first line as table headers
-    var headerNames = Plotly.d3.keys(rows[0]);
-
-    
-    // assign table header and cell values
-    var headerValues = [];
-    var cellValues = [];
-    for (i = 0; i < headerNames.length; i++) {
-        headerValue = [headerNames[i]];
-        headerValues[i] = headerValue;
-        cellValue = unpack(rows, headerNames[i]);
-        cellValues[i] = cellValue;
-    }
-
-    // console.log(headerNames)
-    // console.log(headerValues)
-
-    // create the predData variable for the table
-    var predData = [{
-        type: 'table',
-        header: {
-            values: headerValues,
-            align: "center",
-            line: {width: 1, color: 'rgb(55, 83, 109)'},
-            fill: {color: "rgb(55, 83, 109"},
-            font: {family: "Arial", size: 8, color: "white"}
-        },
-        cells: {
-            values: cellValues,
-            align: ["center", "center"],
-            line: {color: "black", width: 1},
-            fill: {color: "white"},
-            font: {family: "Arial", size: 9, color: ["black"]}
-        }
-    }]
-
-    // plot the table
-    Plotly.newPlot('table', predData);
-});
 
 // ///////////////////////////////////////////////////////////////
 
+//  select the data for differrence plot
 Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
-
+  //  get the rows
   function unpack(rows, key) {
   return rows.map(function(row) { return row[key]; });
 }
-
+  //  unpack year annd difference values
   var frames = []
   var x = unpack(rows, 'Year')
   var y = unpack(rows, 'Difference')
@@ -136,7 +87,7 @@ Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
     frames[i].data[0].x = x.slice(0, i+1);
     frames[i].data[0].y = y.slice(0, i+1);
   }
-
+  //  create the plot  and set features
   Plotly.newPlot('plot', [{
     x: frames[1].data[0].x,
     y: frames[1].data[0].y,
@@ -206,118 +157,143 @@ Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
 })
 
 
+// ////////////////////////////////////////
+
+// create plots  for states
+// select the states data
+
+var url_state = "/api/state_energy";
+
+d3.json(url_state, function(data){
+  console.log(data)
+  document.getElementById("selDataset").addEventListener("change", function() {
+    var value = this[this.selectedIndex].value;
+    getPlot(value, data);
+    getPlot2(value, data);
+  })
+  //  select and get dropdown variable
+  var dropdown = d3.select("#selDataset");
+
+  //  create states variable
+  var states = data.map(item => item.state)
+
+  console.log(states)
+
+  // select the data for the dropdwown menu
+  var filtered = states.filter(function(item, pos){
+    return states.indexOf(item)== pos; 
+  });
+  console.log(filtered)
+  //  add states to dropdown menu
+  filtered.forEach( state => {
+              dropdown
+              .append("option")
+              .text(state)
+              .property("value", state);
+          });
+  
+  getPlot(filtered[0], data);
+  getPlot2(filtered[0], data);
 
 
-
-
-
-
-
-
-// Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
-
-//   function unpack(rows, key) {
-//   return rows.map(function(row) { return row[key]; });
-// }
-
-//   var frames = []
-//   var x = unpack(rows, 'Year')
-//   var y = unpack(rows, 'Total Consumed(Billion Btu)')
-//   var x2 = unpack(rows, 'Year')
-//   var y2 = unpack(rows, 'Population(Thousand)')
-
-//   console.log(frames)
-
-//   var n = 100;
-//   for (var i = 0; i < n; i++) {
-//     frames[i] = {data: [{x: [], y: []}, {x: [], y: []}]}
-//     frames[i].data[1].x = x.slice(0, i+1);
-//     frames[i].data[1].y = y.slice(0, i+1);
-//     frames[i].data[0].x = x2.slice(0, i+1);
-//     frames[i].data[0].y = y2.slice(0, i+1);
-//   }
-
-//   var trace4 = {
-//     type: "scatter",
-//     mode: "lines",
-//     name: 'Population',
-//     fill: 'tonexty',
-//     x: frames[5].data[1].x,
-//     y: frames[5].data[1].y,
-//     line: {color: 'grey'}
-//   }
-
-//   var trace5 = {
-//     type: "scatter",
-//     mode: "lines",
-//     name: 'Total Consumed',
-//     x: frames[5].data[0].x,
-//     y: frames[5].data[0].y,
-//     line: {color: 'lightgrey'}
-//   }
-
-//   var data5= [trace4,trace5];
-
-//   var layout5 = {
-//     title: 'Total Consumed Energy - Population',
-//     xaxis: {
-//       range: [frames[99].data[0].x[0], frames[99].data[0].x[99]],
-//       showgrid: false
-//     },
-//     yaxis: {
-//       range: [120, 140],
-//       showgrid: false
-//     },
-//     legend: {
-//       orientation: 'h',
-//       x: 0.5,
-//       y: 1.2,
-//       xanchor: 'center'
-//     },
-//     updatemenus: [{
-//       x: 0.5,
-//       y: 0,
-//       yanchor: "top",
-//       xanchor: "center",
-//       showactive: false,
-//       direction: "left",
-//       type: "buttons",
-//       pad: {"t": 87, "r": 10},
-//       buttons: [{
-//         method: "animate",
-//         args: [null, {
-//           fromcurrent: true,
-//           transition: {
-//             duration: 0,
-//           },
-//           frame: {
-//             duration: 40,
-//             redraw: false
-//           }
-//         }],
-//         label: "Play"
-//       }, {
-//         method: "animate",
-//         args: [
-//           [null],
-//           {
-//             mode: "immediate",
-//             transition: {
-//               duration: 0
-//             },
-//             frame: {
-//               duration: 0,
-//               redraw: false
-//             }
-//           }
-//         ],
-//         label: "Pause"
-//       }]
-//     }]
-//   };
-
-//   Plotly.newPlot('plot', data5, layout5).then(function() {
-//     Plotly.addFrames('plot', frames);
-//   });
+  function getPlot(value, data){
     
-// })
+    var year = data.map(item => value === item.state && item.year );
+    var renewable = data.map(item => value === item.state && item.produced_renewable);
+    var consumed = data.map(item  => value == item.state && item.total_consumed);
+
+    console.log(renewable)
+  
+
+    var s_trace1 = {
+      x: year,
+      y: renewable,
+      fill: 'tonexty',
+      type: 'scatter',
+      name: "Renewable Production",
+      mode: 'lines',
+      line: {
+        dash: 'solid',
+        width: 8
+      },
+      marker: {color: 'green'}
+      
+    };
+
+    var s_trace2 = {
+      x: year,
+      y: consumed,
+      fill: 'tozeroy',
+      type: "scatteer",
+      name: "Total Consumption",
+      mode: 'lines',
+      // name: 'Solid',
+      line: {
+      dash: 'solid',
+      width: 8
+      },
+      marker: {color: 'orange'}
+    }
+
+    var layout  = {
+      title: "Renewable Production vs Total Energy Consumption",
+      xaxis:{
+        title:"Year",
+        tickmode: "linear",
+        dtick: 10
+      },
+      yaxis:{
+        title:"Billion BTU"
+      }
+    
+    };
+    
+
+    state_data = [s_trace1, s_trace2];
+
+    Plotly.newPlot("plot2",state_data, layout);
+  }
+
+  // create the second plot for the states
+  function getPlot2(value, data){
+    
+    var year = data.map(item => value === item.state && item.year );
+    var population = data.map(item => value === item.state && item.population);
+    var price = data.map(item  => value === item.state && item.energy_price);
+
+    var s_trace4 = {
+      x: year,
+      y: price,
+      name: "Price",
+      mode: 'lines',
+      line: {
+      dash: 'solid',
+      width: 6
+      },
+      marker:{
+        color: "rgb(55, 83, 109)"
+      }
+    };
+
+
+    var layout  = {
+      title: "Average Price",
+      xaxis:{
+        title:"Year"
+      },
+      yaxis:{
+        title:"$/million BTU"
+      },
+      
+    };
+    
+    state_data = [s_trace4];
+
+    Plotly.newPlot("plot3",state_data, layout);
+  };
+  
+}); 
+
+
+
+  
