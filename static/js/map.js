@@ -1,7 +1,9 @@
 // create our base map
 var mapboxAccessToken = API_KEY;
 
-var map = L.map("map").setView([37.8, -96], 4);
+var map = L.map("map", {
+    // layers: one_year
+}).setView([37.8, -96], 4);
 
 // create a function to resize the map for small screens
 reZoomMap(); 
@@ -34,59 +36,22 @@ L.geoJson(statesData).addTo(map);
 //  assign our data route to a variable
 var data_url = "/api/state_energy";
 
-// grab the data with d3
-d3.json(data_url, function(data){
-    
-    // loop through our data and join with states data
-    for(var i = 0; i < data.length; i++) {
-        for(var j = 0; j < statesData.features.length; j++) {
-            if(data[i].state === statesData.features[j].properties.name && data[i].year == 2021) {
-                statesData.features[j].properties.energy_difference_2021 = data[i].difference;
-                statesData.features[j].properties.produced_renewable_2021 = data[i].produced_renewable;
-                statesData.features[j].properties.total_consumed_2021 = data[i].total_consumed;
-                statesData.features[j].properties.population_2021 = data[i].population;
-                statesData.features[j].properties.energy_price_2021 = data[i].energy_price;
-                statesData.features[j].properties.year_2021 = data[i].year;
-            }
-        }
-    };
-
-    // grab energy difference min and max values to create the color scale
-    var min = Math.min.apply(null, data.difference);
-    var max = Math.max.apply(null, data.difference);
-
-    console.log('min, max:', min, max);
-
-    // create function that assigns colors
-    function getColor(d) {
-        return d > 0  ? "#e5f5e0":
-               d > -100000 ? "#F8F352":
-               d > -500000 ? "#F8F352":
-               d > -1000000 ? "#F8E252":
-               d > -2000000 ? "#F8C452":
-               d > -3000000 ? "#F68C21":
-               d > -4000000 ? "#DF1418":
-                              "#DF1418"                                  
+// create function that assigns colors for map & legend
+function getColor(d) {
+    return d > 0  ? "#e5f5e0":
+            d > -100000 ? "#F8F352":
+            d > -500000 ? "#F8F352":
+            d > -1000000 ? "#F8E252":
+            d > -2000000 ? "#F8C452":
+            d > -3000000 ? "#F68C21":
+            d > -4000000 ? "#DF1418":
+                            "#DF1418"                                  
 }     
-
-
-    // create style function 
-    function style(feature) {
-        return {
-            fillColor: getColor(feature.properties.energy_difference_2021),
-            weight: 2,
-            opacity: 0.8,
-            color: 'gray',
-            fillOpacity: 0.7
-        };
-    }
-    
-    //  add styles to our map
-    L.geoJson(statesData, { style: style }).addTo(map);
-
-    //  add the legend to the map
+        
+// Create Function for making the Map Legend
+function makeLegend(map) {
     var legend = L.control({position: 'bottomright'});
-
+        
     legend.onAdd = function (map) {
         // create a div for the legend
         var div = L.DomUtil.create('div', 'info legend');
@@ -104,45 +69,113 @@ d3.json(data_url, function(data){
         }        
         return div;
     };
-    legend.addTo(map);
+
+    legend.addTo(map)
+}
+
+// Create a Function that will make the map layer according to the Year Selected in the Map Control in the top right corner
+function makeMap(year) {
+    return new Promise((resolve, reject) => {
+        d3.json(data_url, function(data){
     
-    // add mouseover event for each feature to style and show popup
-    function onEachFeature(feature, layer) {
-        layer.on('mouseover', function(e) {
-            layer.setStyle({
-                weight: 5,
-                color: '#666',
-                dashArray: '',
-                fillOpacity: 1
-            });
+            // loop through our data and join with states data
+            for(var i = 0; i < data.length; i++) {
+                for(var j = 0; j < statesData.features.length; j++) {
+                    if(data[i].state === statesData.features[j].properties.name && data[i].year == year) {
+                        statesData.features[j].properties.energy_difference = data[i].difference;
+                        statesData.features[j].properties.produced_renewable = data[i].produced_renewable;
+                        statesData.features[j].properties.total_consumed= data[i].total_consumed;
+                        statesData.features[j].properties.population= data[i].population;
+                        statesData.features[j].properties.energy_price= data[i].energy_price;
+                        statesData.features[j].properties.year= data[i].year;
+                    }
+                }
+            };
         
-            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                this.bringToFront();
+            // grab energy difference min and max values to create the color scale
+            var min = Math.min.apply(null, data.difference);
+            var max = Math.max.apply(null, data.difference);
+        
+            console.log('min, max:', min, max);
+        
+            // create style function 
+            function style(feature) {
+                return {
+                    fillColor: getColor(feature.properties.energy_difference),
+                    weight: 2,
+                    opacity: 0.8,
+                    color: 'gray',
+                    fillOpacity: 0.7
+                };
             }
-            layer.openPopup();
-        }).on('mouseout', function(e) {
-            geojson.resetStyle(e.target);
-            layer.closePopup();
-        });
+            
+            
+            // add mouseover event for each feature to style and show popup
+            function onEachFeature(feature, layer) {
+                layer.on('mouseover', function(e) {
+                    layer.setStyle({
+                        weight: 5,
+                        color: '#666',
+                        dashArray: '',
+                        fillOpacity: 1
+                    });
+                
+                    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                        this.bringToFront();
+                    }
+                    layer.openPopup();
+                }).on('mouseout', function(e) {
+                    geojson.resetStyle(e.target);
+                    layer.closePopup();
+                });
+                
+                // create the popup variable
+                var popupHtml = "<h5>" + (feature.properties.name) + "</h5>" + "<hr>"+
+                "<p><strong>Renewable Energy Production: </strong>" + feature.properties.produced_renewable + "</p>" + 
+                "<p><strong>Total Consumed Energy: </strong>" + (feature.properties.total_consumed) + "</p>" + 
+                "<p><strong>Energy Difference: </strong>" + (feature.properties.energy_difference) + "</p>" +
+                "<p><strong>Population: </strong>" + (feature.properties.population) + "</p>" +
+                "<p><strong>Energy Price: </strong>" + (feature.properties.energy_price) + "</p>" +
+                "<p><strong>Year: </strong>" + (feature.properties.year) + "</p>";
         
-        // create the popup variable
-        var popupHtml = "<h5>" + (feature.properties.name) + "</h5>" + "<hr>"+
-        "<p><strong>Renewable Energy Production: </strong>" + feature.properties.produced_renewable_2021 + "</p>" + 
-        "<p><strong>Total Consumed Energy: </strong>" + (feature.properties.total_consumed_2021) + "</p>" + 
-        "<p><strong>Energy Difference: </strong>" + (feature.properties.energy_difference_2021) + "</p>" +
-        "<p><strong>Population: </strong>" + (feature.properties.population_2021) + "</p>" +
-        "<p><strong>Energy Price: </strong>" + (feature.properties.energy_price_2021) + "</p>" +
-        "<p><strong>Year: </strong>" + (feature.properties.year_2021) + "</p>";
+        
+                // add the popup to the map and set location
+                layer.bindPopup(popupHtml, { className: 'popup', 'offset': L.point(0, -20) });
+            }
+        
+            //  add the style and onEachFeature function to the map
+            resolve(L.geoJson(statesData, {
+                style: style,
+                onEachFeature: onEachFeature
+            }))
+            
+            // .addTo(map);
+        });
+    })
+};
 
 
-        // add the popup to the map and set location
-        layer.bindPopup(popupHtml, { className: 'popup', 'offset': L.point(0, -20) });
+
+
+
+
+
+Promise.all([makeMap(2021), makeMap(2025), makeMap(2030)]).then(layers => {
+    var layer_2021 = layers[0]
+    var layer_2025 = layers[1]
+    var layer_2030 = layers[2]
+    // array destructuring for fun and less typing;
+    // var [layer_2021, layer_2025, layer_2030] = layers;
+    var baseMaps = {
+        2021: layer_2021,
+        2025: layer_2025,
+        2030: layer_2030
     }
 
-    //  add the style and onEachFeature function to the map
-    geojson = L.geoJson(statesData, {
-        style: style,
-        onEachFeature: onEachFeature
-    }).addTo(map);
 
-});
+    // default is 2021
+    layer_2021.addTo(map);
+    makeLegend(map);
+
+    L.control.layers(baseMaps).addTo(map)
+})
