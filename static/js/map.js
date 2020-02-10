@@ -38,33 +38,35 @@ var data_url = "/api/state_energy";
 
 // create function that assigns colors for map & legend
 function getColor(d) {
-    return d > 0  ? "#e5f5e0":
-            d > -100000 ? "#F8F352":
-            d > -500000 ? "#F8F352":
-            d > -1000000 ? "#F8E252":
-            d > -2000000 ? "#F8C452":
-            d > -3000000 ? "#F68C21":
-            d > -4000000 ? "#DF1418":
-                            "#DF1418"                                  
+    return  d >       0  ? "#90e893":
+            d > -100000  ? "#faffc7":
+            d > -300000  ? "#f4ff73":
+            d > -500000  ? "#fffb00":
+            d > -1000000 ? "#ff9500":
+            d > -2000000 ? "#f23c05":
+            d > -3000000 ? "#DF1418":
+            d > -5000000 ? "#b30505":
+                           "#690202"                                  
 }     
-        
+
 // Create Function for making the Map Legend
 function makeLegend(map) {
+
     var legend = L.control({position: 'bottomright'});
         
     legend.onAdd = function (map) {
         // create a div for the legend
         var div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += "<p>Energy Difference <br>(in Billions of Btus)</br> </p>";
-            grades = [ 0, -100000, -500000, -1000000, -2000000, -3000000, -4000000]
+            div.innerHTML += "<p><strong>Energy Difference <br>(in Billions of Btus)</br><strong></p>";
+            grades = [ 2, -100000,-300000, -500000, -1000000, -3000000, -5000000]
             labels = [];
-            grades1 = ["0 >", "> -100,000", "> -500,000", "> -1,000,000", "> -2,000,000", "> -3,000,000", "> -4,000,000"]
+            grades1 = ["0 >","> -100,000","> -300,000", "> -500,000","> -1,000,000", "> -3,000,000", "> -5,000,000"]
 
         
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
-                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' + 
+                '<i style="background:' + getColor(grades[i] - 1) + '"></i> ' + 
                 grades1[i] + '<br>' ;
         }        
         return div;
@@ -105,7 +107,7 @@ function makeMap(year) {
                     weight: 2,
                     opacity: 0.8,
                     color: 'gray',
-                    fillOpacity: 0.7
+                    fillOpacity: 0.8
                 };
             }
             
@@ -131,12 +133,12 @@ function makeMap(year) {
                 
                 // create the popup variable
                 var popupHtml = "<h5>" + (feature.properties.name) + "</h5>" + "<hr>"+
-                "<p><strong>Renewable Energy Production: </strong>" + feature.properties.produced_renewable + "</p>" + 
-                "<p><strong>Total Consumed Energy: </strong>" + (feature.properties.total_consumed) + "</p>" + 
-                "<p><strong>Energy Difference: </strong>" + (feature.properties.energy_difference) + "</p>" +
-                "<p><strong>Population: </strong>" + (feature.properties.population) + "</p>" +
-                "<p><strong>Energy Price: </strong>" + (feature.properties.energy_price) + "</p>" +
-                "<p><strong>Year: </strong>" + (feature.properties.year) + "</p>";
+                "<p><strong>Energy Difference:\xa0 </strong>" + numeral((feature.properties.energy_difference)).format('0,0.0') + "</p>" +
+                "<p><strong>Renewable Energy Production:\xa0  </strong>" + numeral(feature.properties.produced_renewable).format('0,0') + "</p>" + 
+                "<p><strong>Total Consumed Energy:\xa0 </strong>" + numeral((feature.properties.total_consumed)).format('0,0.0') + "</p>" + 
+                "<p><strong>Population:\xa0  </strong>" + numeral((feature.properties.population) * 1000).format('0,0.0') + "</p>" +
+                "<p><strong>Energy Price ($ per Bil. Btus):\xa0\xa0  </strong>" + numeral((feature.properties.energy_price)).format('$0,0.00') + "</p>" +
+                "<p><strong>Year:\xa0  </strong>" + (feature.properties.year) + "</p>";
         
         
                 // add the popup to the map and set location
@@ -144,10 +146,10 @@ function makeMap(year) {
             }
         
             //  add the style and onEachFeature function to the map
-            resolve(L.geoJson(statesData, {
+            resolve(geojson = L.geoJson(statesData, {
                 style: style,
                 onEachFeature: onEachFeature
-            }))
+            }));
             
             // .addTo(map);
         });
@@ -178,4 +180,7 @@ Promise.all([makeMap(2021), makeMap(2025), makeMap(2030)]).then(layers => {
     makeLegend(map);
 
     L.control.layers(baseMaps).addTo(map)
+
+
 })
+
