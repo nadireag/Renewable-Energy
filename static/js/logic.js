@@ -4,7 +4,6 @@ var url = "/api/us_energy";
 
 //  use d3 to get the data
 d3.json(url, function(data){
-    // console.log(data);
 
     // grab values
     var year = data.map(item => item.year)
