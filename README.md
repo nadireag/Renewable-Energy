@@ -5,11 +5,7 @@
 
 * https://www.eia.gov/state/seds/seds-data-complete.php
 
-* https://data.world/doe/united-states-renewable-energy
-
-* https://www.eia.gov/state/rankings/
-
-* https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States_by_population#cite_note-5
+* https://www.eia.gov/state/seds/seds-data-complete.php?sid=US#PricesExpenditures 
 
 * https://www.kaggle.com/washimahmed/usa-latlong-for-state-abbreviations
 
@@ -36,7 +32,7 @@ Using historical data that is available between the years 1969-2017 for renewabl
 
 * Use HTML, CSS and JavaScript on the front end.
 
-* Use D3, Plotly, Chart.js and Leaflet to visualize the data. 
+* Use D3, Plotly and Leaflet to visualize the data. 
 
 
 ## Development Team
