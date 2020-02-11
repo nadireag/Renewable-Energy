@@ -7,8 +7,6 @@
 
 * https://www.eia.gov/state/seds/seds-data-complete.php?sid=US#PricesExpenditures 
 
-* https://www.kaggle.com/washimahmed/usa-latlong-for-state-abbreviations
-
 
 ### Description:
 
@@ -32,13 +30,14 @@ Using historical data that is available between the years 1969-2017 for renewabl
 
 * Use HTML, CSS and JavaScript on the front end.
 
+* Use Linear Regression model for machine learning.
+
 * Use D3, Plotly and Leaflet to visualize the data. 
 
 
 ## Development Team
 * Nadire Gokcehan - [@nadireg](https://github.com/nadireag)
 * Reid Powell - [@ReidP31](https://github.com/ReidP31)
-* Jacob Abdelkhaleq - [@jacobabdel](https://github.com/jacobabdel)
 * Saba Tass - [@Saba](https://github.com/SabaTass)
 * Kenneth Edwards - [@Kenneth Edwards](https://github.com/Kenneth-Edwards)
 * Cassy Myers - [@Cassy Myers](https://github.com/CassPMyers)

@@ -80,6 +80,7 @@ background-color: #444;
 color:#fff;
 height: 30px;
 font-size: 85%;
+z-index: 5000;
 }
 
 /* add padding to the wrapper for small screens */
