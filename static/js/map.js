@@ -137,7 +137,7 @@ function makeMap(year) {
                 "<p><strong>Renewable Energy Production:\xa0  </strong>" + numeral(feature.properties.produced_renewable).format('0,0') + "</p>" + 
                 "<p><strong>Total Consumed Energy:\xa0 </strong>" + numeral((feature.properties.total_consumed)).format('0,0.0') + "</p>" + 
                 "<p><strong>Population:\xa0  </strong>" + numeral((feature.properties.population) * 1000).format('0,0.0') + "</p>" +
-                "<p><strong>Energy Price ($ per Bil. Btus):\xa0\xa0  </strong>" + numeral((feature.properties.energy_price)*1000).format('$0,0.00') + "</p>" +
+                "<p><strong>Energy Price ($ per Bil. Btus):\xa0\xa0  </strong>" + numeral((feature.properties.energy_price)/1000).format('$0,0.00') + "</p>" +
                 "<p><strong>Year:\xa0  </strong>" + (feature.properties.year) + "</p>";
         
         
