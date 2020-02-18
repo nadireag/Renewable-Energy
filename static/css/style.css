@@ -133,29 +133,31 @@ pointer-events: none;
 } */
 
 /* small screen adjustments*/
-@media(max-width:992px){
+@media(max-width:992px) {
 
     #navbarSupportedContent {
         display: block;
     }
 
     #map {
-        top: 172px;
+        /* top: 172px; */
+        height: 800px
     }
 
     .subtitle {
         height: 36px;
         font-size: 85%;
     }
-    }
+}
 
-    @media(max-width:767px){
+@media(max-width:767px) {
     .thumbnail{
         width: 40%
     }
 
     #map {
-        top: 172px;
+        
+        height: 350px
     }
 
     .subtitle {
