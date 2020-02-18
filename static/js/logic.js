@@ -61,8 +61,10 @@ d3.json(url, function(data){
         bargroupgap: 0.1
       };
 
+      var config = {responsive: true}
+
     // Render the plot to the div tag with id "plot"
-    Plotly.newPlot("plot1", data, layout, {scroolZoom: true});
+    Plotly.newPlot("plot1", data, layout, config);
 
 });
 
@@ -93,7 +95,7 @@ Plotly.d3.csv("static/csv/us_combined.csv", function(err, rows){
     fill: 'tozeroy',
     type: 'scatter',
     mode: 'lines',
-    line: {color: 'red'}
+    line: {color: 'red'},
   }], {
     title: "Difference Between Renewable Production and Total Consumed Energy",
     xaxis: {
