@@ -36,7 +36,7 @@ Using historical data that is available between the years 1969-2017 for renewabl
 
 
 ## Development Team
-* Nadire Gokcehan - [@nadireg](https://github.com/nadireag)
+* Nadire Gokcehan - [@nadireag](https://github.com/nadireag)
 * Reid Powell - [@ReidP31](https://github.com/ReidP31)
 * Saba Tass - [@Saba](https://github.com/SabaTass)
 * Kenneth Edwards - [@Kenneth Edwards](https://github.com/Kenneth-Edwards)
